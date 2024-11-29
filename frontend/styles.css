@@ -1,0 +1,96 @@
+/* General body styling */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background: #fff5f5; /* Light pink background */
+    color: #b30000; /* Deep red text */
+}
+
+/* Header styling */
+header {
+    background: #ff4d4d; /* Bright red header */
+    color: white;
+    text-align: center;
+    padding: 20px;
+}
+
+/* Main section styling */
+main {
+    padding: 20px;
+}
+
+/* Section styling */
+section {
+    margin-bottom: 30px;
+}
+
+/* Form input fields */
+input, textarea {
+    margin-bottom: 10px;
+    padding: 10px;
+    width: 100%; /* Full width for better responsiveness */
+    box-sizing: border-box;
+    border: 1px solid #ff9999; /* Light red border */
+    border-radius: 4px;
+    background: #ffe6e6; /* Light pink background for inputs */
+    color: #b30000; /* Deep red text */
+}
+
+/* Buttons */
+button {
+    background-color: #ff4d4d; /* Bright red buttons */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+button:hover {
+    background-color: #b30000; /* Darker red for hover effect */
+}
+
+/* Articles section styling */
+article {
+    border: 1px solid #ff9999; /* Light red border */
+    padding: 20px;
+    margin-bottom: 20px;
+    background: #ffe6e6; /* Light pink background for articles */
+    border-radius: 6px;
+}
+
+/* Article title */
+article h3 {
+    margin: 0;
+    color: #b30000; /* Deep red for titles */
+}
+
+/* Links */
+a {
+    color: #ff4d4d;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #b30000; /* Darker red for hover */
+    text-decoration: underline;
+}
+
+/* Section headers */
+section h2 {
+    color: #b30000;
+    border-bottom: 2px solid #ff4d4d; /* Bright red underline */
+    padding-bottom: 5px;
+}
+
+/* Error and success messages */
+.error {
+    color: red;
+    font-size: 14px;
+}
+.success {
+    color: green;
+    font-size: 14px;
+}

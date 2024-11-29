@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cardio Blog</title>
+    <style> /* General Styles */
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background: #fff5f5;
+        color: #b30000;
+    }
+    header {
+        background: #ff4d4d;
+        color: white;
+        text-align: center;
+        padding: 20px;
+    }
+    main {
+        padding: 20px;
+    }
+    section {
+        margin-bottom: 30px;
+    }
+    form {
+        margin-bottom: 20px;
+    }
+    input, textarea {
+        margin-bottom: 10px;
+        padding: 10px;
+        width: 100%;
+        box-sizing: border-box;
+    }
+    button {
+        background-color: #ff4d4d;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        cursor: pointer;
+    }
+    button:hover {
+        background-color: #b30000;
+    }
+    article {
+        border: 1px solid #ff9999;
+        padding: 20px;
+        margin-bottom: 20px;
+        background: #ffe6e6;
+    }
+    </style>
+</head>
+<body>
+<header>
+    <h1>Cardio Blog</h1>
+    <p>Your source for expert cardiology insights</p>
+</header>
+<main>
+    <!-- Authentication Section -->
+    <section id="auth">
+        <h2>Login</h2>
+        <form id="login-form">
+            <label>Username: <input type="text" id="login-username"></label><br>
+            <label>Password: <input type="password" id="login-password"></label><br>
+            <button type="submit">Login</button>
+        </form>
+
+        <h2>Sign Up</h2>
+        <form id="signup-form">
+            <label>Username: <input type="text" id="signup-username"></label><br>
+            <label>Password: <input type="password" id="signup-password"></label><br>
+            <button type="submit">Sign Up</button>
+        </form>
+    </section>
+
+    <!-- Articles Section -->
+    <section id="articles-section">
+        <h2>Articles</h2>
+        <div id="articles"></div>
+    </section>
+
+    <!-- Article Submission Section -->
+    <section id="submit-article">
+        <h2>Submit a New Article</h2>
+        <form id="article-form">
+            <label>Title: <input type="text" id="article-title"></label><br>
+            <label>Content: <textarea id="article-content" rows="5"></textarea></label><br>
+            <label>Reference URL: <input type="text" id="article-reference"></label><br>
+            <button type="submit">Submit Article</button>
+        </form>
+    </section>
+</main>
+
+<script>
+    let token = localStorage.getItem('token'); // Store JWT token
+
+    // Render articles
+    const fetchArticles = () => {
+        fetch('/api/articles')
+            .then(response => response.json())
+            .then(articles => {
+                const articlesDiv = document.getElementById('articles');
+                articlesDiv.innerHTML = ''; // Clear existing articles
+                articles.forEach(article => {
+                    const articleElement = document.createElement('article');
+                    articleElement.innerHTML = `
+                        <h3>${article.title}</h3>
+                        <p><strong>By:</strong> ${article.author}</p>
+                        <p>${article.content}</p>
+                        <p><a href="${article.reference}" target="_blank">Read more</a></p> `;
+                    articlesDiv.appendChild(articleElement);
+                });
+            });
+    };
+    // Handle
+    login document.getElementById('login-form').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const username = document.getElementById('login-username').value;
+        const password = document.getElementById('login-password').value;
+
+        const res = await fetch('/api/auth/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ username, password }),
+        });
+        if (res.ok) {
+            const data = await res.json();
+            token = data.token;
+            localStorage.setItem('token', token);
+            alert('Login successful');
+        } else {
+            alert('Login failed');
+        }
+    });
+
+    // Handle signup
+    document.getElementById('signup-form').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const username = document.getElementById('signup-username').value;
+        const password = document.getElementById('signup-password').value;
+
+        const res = await fetch('/api/auth/signup', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ username, password }),
+        });
+        if (res.ok) {
+            alert('Signup successful. Please log in.');
+        } else {
+            alert('Signup failed');
+        }
+    });
+
+    // Handle article submission
+    document.getElementById('article-form').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const title = document.getElementById('article-title').value;
+        const content = document.getElementById('article-content').value;
+        const reference = document.getElementById('article-reference').value;
+
+        const res = await fetch('/api/articles', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify({ title, content, reference }),
+        });
+        if (res.ok) {
+            alert('Article submitted successfully');
+            fetchArticles(); // Reload articles
+        } else {
+            alert('Failed to submit article');
+        }
+    });
+
+    // Fetch articles on page
+    load fetchArticles();
+</script>
+</body>
+</html>
